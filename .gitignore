@@ -1,0 +1,5 @@
+venv
+*.csv
+*.torch
+*.mp4
+.idea
