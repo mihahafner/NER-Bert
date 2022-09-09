@@ -8,6 +8,7 @@ scikit-learn
 pytorch-pretrained-bert
 tensorflow
 matplotlib
+torchvision
 
 
 

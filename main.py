@@ -14,18 +14,31 @@ from pytorch_pretrained_bert import BertForTokenClassification
 from sklearn.model_selection import train_test_split
 from torch.optim import *
 from torch.utils.data import TensorDataset, DataLoader, RandomSampler, SequentialSampler
+import warnings
 
-model_name = input("Enter model name: ")
+torch.cuda.empty_cache()
+warnings.simplefilter(action='ignore')
 
 # HYPER
-optim = Adadelta # Adadelta, Adagrad, Adam, Adamax, AdamW,ASGD,LBFGS, NAdam  Rprop, SGD, RMSprop, RAdam, SparseAdam
-learn_rate = 1e-4 # 1e-2, 1e-3, 1e-4, 1e-5, 1e-6
-batch_size = 8 # 2, 4, 8, 16, 32, 64, 128
+epochs = 10 # Koliko iteracij bo model sel se trenirat preko vseh podatkov.
+optim = Adam # Adadelta, Adagrad, Adam, Adamax, AdamW, ASGD, LBFGS, NAdam  Rprop, SGD, RMSprop, RAdam, SparseAdam
+learn_rate = 1e-2 # 1e-2, 1e-3, 1e-4, 1e-5, 1e-6
+batch_size = 4 # 2, 8, 32
+
+print(f"""
+Epochs: {epochs}
+Optimizer: {optim.__name__}
+Learn rate: {learn_rate}
+Batch size: {batch_size} 
+""")
+model_name = input("Enter model name: ")
+
+
 
 # CONST
 data_file_address = "data.json"
 validation_ratio = 0.1
-epochs = 10
+
 
 # Reading data
 df_data = pd.read_json(data_file_address, lines=True)
@@ -156,7 +169,7 @@ MAX_LEN = 300
 # In[13]:
 
 
-device = torch.device("cpu")
+device = torch.device("cuda")
 
 
 # In[14]:
@@ -249,7 +262,7 @@ valid_dataloader = DataLoader(valid_data, sampler=valid_sampler, batch_size=batc
 
 
 model = BertForTokenClassification.from_pretrained("bert-base-uncased", num_labels=len(tag2idx))
-
+model.cuda()
 
 # In[26]:
 

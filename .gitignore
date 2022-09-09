@@ -3,3 +3,6 @@ venv
 *.torch
 *.mp4
 .idea
+*.rar
+*.zip
+*.png
